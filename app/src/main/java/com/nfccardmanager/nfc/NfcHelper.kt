@@ -2,10 +2,8 @@ package com.nfccardmanager.nfc
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Build
@@ -19,7 +17,6 @@ class NfcHelper @Inject constructor(
 ) {
     private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
-    private var isReceiverRegistered = false
 
     init {
         nfcAdapter = NfcAdapter.getDefaultAdapter(context)
@@ -29,18 +26,6 @@ class NfcHelper @Inject constructor(
     fun isNfcAvailable(): Boolean = nfcAdapter != null
 
     fun isNfcEnabled(): Boolean = nfcAdapter?.isEnabled == true
-
-    fun enableNfc() {
-        if (isNfcAvailable()) {
-            nfcAdapter?.enable()
-        }
-    }
-
-    fun disableNfc() {
-        if (isNfcAvailable()) {
-            nfcAdapter?.disable()
-        }
-    }
 
     fun enableForegroundDispatch(activity: Activity) {
         val adapter = nfcAdapter ?: return

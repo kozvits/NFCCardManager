@@ -2,13 +2,13 @@ package com.nfccardmanager.service
 
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
+import com.nfccardmanager.nfc.NfcConstants
+import com.nfccardmanager.util.Extensions
 import com.nfccardmanager.util.HcePreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import java.io.File
 
 class CardEmulationService : HostApduService() {
 

@@ -77,12 +77,12 @@ fun DetailScreen(
                                 label = stringResource(R.string.detail_uid),
                                 value = card.uid
                             )
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                            Divider()
                             DetailRow(
                                 label = stringResource(R.string.detail_type),
                                 value = card.type.name
                             )
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                            Divider()
                             DetailRow(
                                 label = stringResource(R.string.detail_created),
                                 value = card.createdAt.toDateString()

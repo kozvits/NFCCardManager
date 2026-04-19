@@ -111,7 +111,7 @@ class NfcCardReader @Inject constructor() {
                 val sectorCount = classic.sectorCount
                 for (sector in 0 until sectorCount) {
                     val sectorIndex = classic.sectorToBlock(sector)
-                    val blockCountInSector = if (classic.isFirstSector(sector)) 4 else 5
+                    val blockCountInSector = if (sector < 4) 4 else 5
                     for (block in 0 until blockCountInSector) {
                         try {
                             val blockData = classic.readBlock(sectorIndex + block)
