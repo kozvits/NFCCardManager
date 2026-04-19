@@ -104,7 +104,7 @@ fun DetailScreen(
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = card.data!!.toHexString(),
+                                    text = card.data?.toHexString() ?: "No data",
                                     style = MaterialTheme.typography.bodySmall,
                                     maxLines = 10
                                 )

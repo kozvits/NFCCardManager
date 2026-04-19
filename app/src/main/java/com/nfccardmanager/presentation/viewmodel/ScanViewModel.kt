@@ -27,7 +27,8 @@ sealed class ScanUiState {
 class ScanViewModel @Inject constructor(
     private val nfcCardReader: NfcCardReader,
     private val saveCardUseCase: SaveCardUseCase,
-    private val checkCardExistsUseCase: CheckCardExistsUseCase
+    private val checkCardExistsUseCase: CheckCardExistsUseCase,
+    private val nfcIntentHolder: com.nfccardmanager.nfc.NfcIntentHolder
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ScanUiState>(ScanUiState.Idle)
@@ -35,6 +36,15 @@ class ScanViewModel @Inject constructor(
 
     fun startScanning() {
         _uiState.value = ScanUiState.Scanning
+    }
+
+    fun processStoredNfcIntent() {
+        viewModelScope.launch {
+            val intent = nfcIntentHolder.consumeIntent()
+            if (intent != null) {
+                processNfcIntent(intent)
+            }
+        }
     }
 
     fun processNfcIntent(intent: Intent?) {

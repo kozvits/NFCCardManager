@@ -1,6 +1,5 @@
 package com.nfccardmanager.presentation.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nfccardmanager.domain.model.Card
@@ -21,7 +20,6 @@ data class EmulationUiState(
 
 @HiltViewModel
 class EmulationViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getSelectedCardUseCase: GetSelectedCardUseCase,
     private val hcePreferences: HcePreferences
 ) : ViewModel() {

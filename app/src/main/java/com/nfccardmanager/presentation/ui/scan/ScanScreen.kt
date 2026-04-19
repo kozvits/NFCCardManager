@@ -1,6 +1,5 @@
 package com.nfccardmanager.presentation.ui.scan
 
-import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Nfc
@@ -25,22 +24,12 @@ fun ScanScreen(
     viewModel: ScanViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val activity = context as? Activity
     val uiState by viewModel.uiState.collectAsState()
     var cardName by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.startScanning()
-    }
-
-    DisposableEffect(activity) {
-        activity?.let {
-            val originalIntent = it.intent
-            if (originalIntent != null) {
-                viewModel.processNfcIntent(originalIntent)
-            }
-        }
-        onDispose { }
+        viewModel.processStoredNfcIntent()
     }
 
     Scaffold(

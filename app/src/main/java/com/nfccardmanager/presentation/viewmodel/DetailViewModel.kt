@@ -24,7 +24,7 @@ data class DetailUiState(
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val getCardByIdUseCase: GetCardByIdUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
     private val selectCardUseCase: SelectCardUseCase,
