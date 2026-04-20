@@ -7,6 +7,7 @@ import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Build
+import com.nfccardmanager.presentation.ui.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -45,7 +46,7 @@ class NfcHelper @Inject constructor(
         if (!adapter.isEnabled) return
 
         if (pendingIntent == null || activityClass == null) {
-            setupPendingIntent(activity::class.java)
+            setupPendingIntent(MainActivity::class.java)
         }
 
         try {
