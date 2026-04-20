@@ -1,7 +1,9 @@
 package com.nfccardmanager.presentation.ui.main
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,6 +35,10 @@ class MainActivity : ComponentActivity() {
         
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
+        val prefs = getSharedPreferences("hce_prefs", Context.MODE_PRIVATE)
+        val hasSelectedCard = prefs.getString("uid", null) != null
+        val startRoute = if (hasSelectedCard) Screen.Emulation.route else Screen.Main.route
+
         setContent {
             NFCCardManagerTheme {
                 val navController = rememberNavController()
@@ -41,7 +47,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold { paddingValues ->
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Main.route,
+                        startDestination = startRoute,
                         modifier = Modifier.padding(paddingValues)
                     ) {
                         composable(Screen.Main.route) {
