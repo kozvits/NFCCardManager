@@ -23,6 +23,12 @@ fun EmulationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        if (uiState.card != null && !uiState.isEmulating) {
+            viewModel.startEmulation()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
