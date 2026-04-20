@@ -21,40 +21,27 @@ import com.nfccardmanager.presentation.ui.detail.DetailScreen
 import com.nfccardmanager.presentation.ui.emulation.EmulationScreen
 import com.nfccardmanager.presentation.ui.scan.ScanScreen
 import com.nfccardmanager.presentation.ui.theme.NFCCardManagerTheme
-import com.nfccardmanager.util.HcePreferences
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private var nfcAdapter: NfcAdapter? = null
 
-    @Inject
-    lateinit var hcePreferences: HcePreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-
-        val hasSelectedCard = hcePreferences.getUid() != null
 
         setContent {
             NFCCardManagerTheme {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-                val startDestination = if (hasSelectedCard) {
-                    Screen.Emulation.route
-                } else {
-                    Screen.Main.route
-                }
-
                 Scaffold { paddingValues ->
                     NavHost(
                         navController = navController,
-                        startDestination = startDestination,
+                        startDestination = Screen.Main.route,
                         modifier = Modifier.padding(paddingValues)
                     ) {
                         composable(Screen.Main.route) {
