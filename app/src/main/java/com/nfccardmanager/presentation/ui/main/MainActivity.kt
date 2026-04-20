@@ -2,6 +2,7 @@ package com.nfccardmanager.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,65 +39,81 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
-            NFCCardManagerTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
+        try {
+            setContent {
+                NFCCardManagerTheme {
+                    val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-                Scaffold { paddingValues ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screen.Main.route,
-                        modifier = Modifier.padding(paddingValues)
-                    ) {
-                        composable(Screen.Main.route) {
-                            MainScreen(
-                                onNavigateToScan = { navController.navigate(Screen.Scan.route) },
-                                onNavigateToDetail = { cardId ->
-                                    navController.navigate(Screen.Detail.createRoute(cardId))
-                                },
-                                onNavigateToEmulation = { navController.navigate(Screen.Emulation.route) }
-                            )
-                        }
-                        composable(Screen.Scan.route) {
-                            ScanScreen(
-                                onNavigateBack = { navController.popBackStack() }
-                            )
-                        }
-                        composable(
-                            route = Screen.Detail.route,
-                            arguments = listOf(navArgument("cardId") { type = NavType.LongType })
+                    Scaffold { paddingValues ->
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.Main.route,
+                            modifier = Modifier.padding(paddingValues)
                         ) {
-                            DetailScreen(
-                                onNavigateBack = { navController.popBackStack() },
-                                onNavigateToEmulation = {
-                                    navController.navigate(Screen.Emulation.route)
-                                }
-                            )
-                        }
-                        composable(Screen.Emulation.route) {
-                            EmulationScreen(
-                                onNavigateBack = { navController.popBackStack() }
-                            )
+                            composable(Screen.Main.route) {
+                                MainScreen(
+                                    onNavigateToScan = { navController.navigate(Screen.Scan.route) },
+                                    onNavigateToDetail = { cardId ->
+                                        navController.navigate(Screen.Detail.createRoute(cardId))
+                                    },
+                                    onNavigateToEmulation = { navController.navigate(Screen.Emulation.route) }
+                                )
+                            }
+                            composable(Screen.Scan.route) {
+                                ScanScreen(
+                                    onNavigateBack = { navController.popBackStack() }
+                                )
+                            }
+                            composable(
+                                route = Screen.Detail.route,
+                                arguments = listOf(navArgument("cardId") { type = NavType.LongType })
+                            ) {
+                                DetailScreen(
+                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateToEmulation = {
+                                        navController.navigate(Screen.Emulation.route)
+                                    }
+                                )
+                            }
+                            composable(Screen.Emulation.route) {
+                                EmulationScreen(
+                                    onNavigateBack = { navController.popBackStack() }
+                                )
+                            }
                         }
                     }
                 }
             }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in setContent", e)
         }
 
-        if (!nfcHelper.isNfcAvailable()) {
-            Toast.makeText(this, R.string.error_nfc_not_available, Toast.LENGTH_LONG).show()
+        try {
+            if (!nfcHelper.isNfcAvailable()) {
+                Toast.makeText(this, R.string.error_nfc_not_available, Toast.LENGTH_LONG).show()
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking NFC", e)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        nfcHelper.enableForegroundDispatch(this)
+        try {
+            nfcHelper.enableForegroundDispatch(this)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in onResume", e)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        nfcHelper.disableForegroundDispatch(this)
+        try {
+            nfcHelper.disableForegroundDispatch(this)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in onPause", e)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
