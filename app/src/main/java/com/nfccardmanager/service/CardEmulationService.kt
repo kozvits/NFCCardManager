@@ -3,8 +3,9 @@ package com.nfccardmanager.service
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
 import com.nfccardmanager.nfc.NfcConstants
-import com.nfccardmanager.util.Extensions
 import com.nfccardmanager.util.HcePreferences
+import com.nfccardmanager.util.hexToBytes
+import com.nfccardmanager.util.toHexString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

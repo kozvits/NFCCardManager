@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.nfccardmanager.R
 import com.nfccardmanager.domain.model.Card
 import com.nfccardmanager.presentation.viewmodel.MainViewModel
-import com.nfccardmanager.util.Extensions.toDateString
+import com.nfccardmanager.util.toDateString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

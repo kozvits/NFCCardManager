@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nfccardmanager.R
 import com.nfccardmanager.presentation.viewmodel.DetailViewModel
-import com.nfccardmanager.util.Extensions.toDateString
-import com.nfccardmanager.util.Extensions.toHexString
+import com.nfccardmanager.util.toDateString
+import com.nfccardmanager.util.toHexString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

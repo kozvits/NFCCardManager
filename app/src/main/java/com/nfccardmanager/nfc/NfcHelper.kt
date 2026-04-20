@@ -17,10 +17,23 @@ class NfcHelper @Inject constructor(
 ) {
     private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
+    private var activityClass: Class<*>? = null
 
     init {
         nfcAdapter = NfcAdapter.getDefaultAdapter(context)
-        setupPendingIntent()
+    }
+
+    fun setupPendingIntent(cls: Class<*>) {
+        activityClass = cls
+        val intent = Intent(context, cls).apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        pendingIntent = PendingIntent.getActivity(context, 0, intent, flags)
     }
 
     fun isNfcAvailable(): Boolean = nfcAdapter != null
@@ -31,8 +44,8 @@ class NfcHelper @Inject constructor(
         val adapter = nfcAdapter ?: return
         if (!adapter.isEnabled) return
 
-        if (pendingIntent == null) {
-            setupPendingIntent()
+        if (pendingIntent == null || activityClass == null) {
+            setupPendingIntent(activity::class.java)
         }
 
         try {
@@ -66,18 +79,6 @@ class NfcHelper @Inject constructor(
             }
         }
         return null
-    }
-
-    private fun setupPendingIntent() {
-        val intent = Intent(context, context.javaClass).apply {
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, flags)
     }
 
     fun getAdapter(): NfcAdapter? = nfcAdapter
