@@ -29,6 +29,7 @@ object AppModule {
             "nfc_cards_database"
         )
             .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
             .build()
     }
 
