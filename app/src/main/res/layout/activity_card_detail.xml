@@ -16,7 +16,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_back"
             android:contentDescription="Back"
             android:text="←"
             android:textColor="#FFFFFF"

@@ -28,7 +28,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="4dp"
-            android:background="@drawable/ic_add"
             android:contentDescription="Scan new card"
             android:text="+"
             android:textColor="#FFFFFF"
