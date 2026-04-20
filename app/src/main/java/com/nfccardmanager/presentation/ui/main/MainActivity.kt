@@ -2,36 +2,75 @@ package com.nfccardmanager.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.nfccardmanager.R
+import com.nfccardmanager.data.local.entity.CardEntity
+import com.nfccardmanager.presentation.adapter.CardAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CardAdapter
+    
+    @Inject
+    lateinit var cardRepository: com.nfccardmanager.data.repository.CardRepositoryImpl
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         
-        val layout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(50, 50, 50, 50)
+        recyclerView = findViewById(R.id.card_list)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        
+        // Create dummy cards for testing
+        val dummyCards = listOf(
+            // Office NFC card
+            CardEntity(
+                id = 1,
+                uid = "E00401500000B102",
+                type = "Mifare Classic 1K",
+                name = "Office Access Card",
+                description = "Office building access",
+                scanDate = System.currentTimeMillis(),
+                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"00112233445566778899AABBCCDDEEFF\"}]}]}"
+            ),
+            // Metro card
+            CardEntity(
+                id = 2,
+                uid = "A1B2C3D4E5F67788",
+                type = "Mifare Ultralight",
+                name = "Metro Card",
+                description = "Public transport",
+                scanDate = System.currentTimeMillis() - 86400000,
+                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"FFEEDDCCBBAA99887766554433221100\"}]}]}"
+            ),
+            // Test card
+            CardEntity(
+                id = 3,
+                uid = "1234567890ABCDEF",
+                type = "Generic NFC",
+                name = "Test Card",
+                description = "Testing purposes",
+                scanDate = System.currentTimeMillis() - 172800000,
+                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"00000000000000000000000000000000\"}]}]}"
+            )
+        )
+        
+        adapter = CardAdapter(dummyCards)
+        adapter.onCardClick = { cardId ->
+            // Navigate to detail screen
+            val intent = Intent(this, CardDetailActivity::class.java).apply {
+                putExtra("CARD_ID", cardId)
+            }
+            startActivity(intent)
         }
         
-        val title = TextView(this).apply {
-            text = "NFC Card Manager"
-            textSize = 24f
-        }
-        
-        val subtitle = TextView(this).apply {
-            text = "Tap + to scan a card"
-            textSize = 16f
-        }
-        
-        layout.addView(title)
-        layout.addView(subtitle)
-        
-        setContentView(layout)
+        recyclerView.adapter = adapter
     }
 
     override fun onNewIntent(intent: Intent) {
