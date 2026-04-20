@@ -45,16 +45,16 @@ class CardAdapter(
         private val scanDate: TextView = itemView.findViewById(R.id.scan_date)
 
         fun bind(card: CardEntity) {
-            cardName.text = card.name ?: "Unnamed Card"
-            cardType.text = card.type ?: "Unknown Type"
+            cardName.text = card.name
+            cardType.text = card.type
             
             // Format UID
-            val uid = card.uid ?: "0000000000000000"
+            val uid = card.uid
             cardUid.text = "UID: ${formatUid(uid)}"
             
             // Format date
             val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-            scanDate.text = "Scanned: ${dateFormat.format(Date(card.scanDate))}"
+            scanDate.text = "Added: ${dateFormat.format(Date(card.createdAt))}"
         }
 
         private fun formatUid(uid: String): String {

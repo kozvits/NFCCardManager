@@ -35,9 +35,9 @@ class MainActivity : ComponentActivity() {
                 uid = "E00401500000B102",
                 type = "Mifare Classic 1K",
                 name = "Office Access Card",
-                description = "Office building access",
-                scanDate = System.currentTimeMillis(),
-                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"00112233445566778899AABBCCDDEEFF\"}]}]}"
+                data = null,
+                createdAt = System.currentTimeMillis(),
+                isSelected = false
             ),
             // Metro card
             CardEntity(
@@ -45,9 +45,9 @@ class MainActivity : ComponentActivity() {
                 uid = "A1B2C3D4E5F67788",
                 type = "Mifare Ultralight",
                 name = "Metro Card",
-                description = "Public transport",
-                scanDate = System.currentTimeMillis() - 86400000,
-                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"FFEEDDCCBBAA99887766554433221100\"}]}]}"
+                data = null,
+                createdAt = System.currentTimeMillis() - 86400000,
+                isSelected = false
             ),
             // Test card
             CardEntity(
@@ -55,9 +55,9 @@ class MainActivity : ComponentActivity() {
                 uid = "1234567890ABCDEF",
                 type = "Generic NFC",
                 name = "Test Card",
-                description = "Testing purposes",
-                scanDate = System.currentTimeMillis() - 172800000,
-                dataJson = "{\"sectors\":[{\"sector\":0,\"blocks\":[{\"block\":0,\"data\":\"00000000000000000000000000000000\"}]}]}"
+                data = null,
+                createdAt = System.currentTimeMillis() - 172800000,
+                isSelected = false
             )
         )
         
