@@ -6,12 +6,8 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -25,27 +21,40 @@ import com.nfccardmanager.presentation.ui.detail.DetailScreen
 import com.nfccardmanager.presentation.ui.emulation.EmulationScreen
 import com.nfccardmanager.presentation.ui.scan.ScanScreen
 import com.nfccardmanager.presentation.ui.theme.NFCCardManagerTheme
+import com.nfccardmanager.util.HcePreferences
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private var nfcAdapter: NfcAdapter? = null
 
+    @Inject
+    lateinit var hcePreferences: HcePreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+
+        val hasSelectedCard = hcePreferences.getUid() != null
 
         setContent {
             NFCCardManagerTheme {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
 
+                val startDestination = if (hasSelectedCard) {
+                    Screen.Emulation.route
+                } else {
+                    Screen.Main.route
+                }
+
                 Scaffold { paddingValues ->
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Main.route,
+                        startDestination = startDestination,
                         modifier = Modifier.padding(paddingValues)
                     ) {
                         composable(Screen.Main.route) {
