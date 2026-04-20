@@ -7,6 +7,7 @@ import android.nfc.tech.MifareUltralight
 import android.os.Build
 import com.nfccardmanager.domain.model.Card
 import com.nfccardmanager.domain.model.CardType
+import com.nfccardmanager.util.toHexString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -160,7 +161,4 @@ class NfcCardReader @Inject constructor() {
         }
     }
 
-    private fun ByteArray.toHexString(): String {
-        return joinToString("") { "%02X".format(it) }
-    }
 }

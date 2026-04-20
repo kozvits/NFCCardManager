@@ -36,7 +36,11 @@ class HcePreferences(context: Context) {
 
     fun getCardData(): ByteArray? {
         val hex = prefs.getString(KEY_CARD_DATA, null) ?: return null
-        return hex.hexToBytes()
+        return try {
+            hex.hexToBytes()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     fun setCardType(type: String) {
@@ -70,13 +74,5 @@ class HcePreferences(context: Context) {
         private const val KEY_CARD_DATA = "card_data"
         private const val KEY_CARD_TYPE = "card_type"
         private const val KEY_EMULATION_ACTIVE = "emulation_active"
-
-        private fun ByteArray.toHexString(): String {
-            return joinToString("") { "%02X".format(it) }
-        }
-
-        private fun String.hexToBytes(): ByteArray {
-            return chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-        }
     }
 }

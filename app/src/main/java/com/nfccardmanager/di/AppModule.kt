@@ -27,7 +27,9 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "nfc_cards_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

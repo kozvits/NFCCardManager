@@ -107,12 +107,4 @@ class CardEmulationService : HostApduService() {
         super.onDestroy()
         serviceScope.cancel()
     }
-
-    private fun ByteArray.toHexString(): String {
-        return joinToString("") { "%02X".format(it) }
-    }
-
-    private fun String.hexToBytes(): ByteArray {
-        return chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-    }
 }

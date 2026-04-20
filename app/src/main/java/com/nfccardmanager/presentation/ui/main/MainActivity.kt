@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -39,9 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
-            setContent {
-                NFCCardManagerTheme {
+        setContent {
+            NFCCardManagerTheme {
+                try {
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -52,41 +53,65 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(paddingValues)
                         ) {
                             composable(Screen.Main.route) {
-                                MainScreen(
-                                    onNavigateToScan = { navController.navigate(Screen.Scan.route) },
-                                    onNavigateToDetail = { cardId ->
-                                        navController.navigate(Screen.Detail.createRoute(cardId))
-                                    },
-                                    onNavigateToEmulation = { navController.navigate(Screen.Emulation.route) }
-                                )
+                                try {
+                                    MainScreen(
+                                        onNavigateToScan = { navController.navigate(Screen.Scan.route) },
+                                        onNavigateToDetail = { cardId ->
+                                            navController.navigate(Screen.Detail.createRoute(cardId))
+                                        },
+                                        onNavigateToEmulation = { navController.navigate(Screen.Emulation.route) }
+                                    )
+                                } catch (e: Exception) {
+                                    Log.e("MainActivity", "Error in MainScreen", e)
+                                    Text("Error loading main screen")
+                                }
                             }
                             composable(Screen.Scan.route) {
-                                ScanScreen(
-                                    onNavigateBack = { navController.popBackStack() }
-                                )
+                                try {
+                                    ScanScreen(
+                                        onNavigateBack = { navController.popBackStack() }
+                                    )
+                                } catch (e: Exception) {
+                                    Log.e("MainActivity", "Error in ScanScreen", e)
+                                    Text("Error loading scan screen")
+                                }
                             }
                             composable(
                                 route = Screen.Detail.route,
-                                arguments = listOf(navArgument("cardId") { type = NavType.LongType })
+                                arguments = listOf(navArgument("cardId") { 
+                                    type = NavType.LongType
+                                    defaultValue = 0L
+                                })
                             ) {
-                                DetailScreen(
-                                    onNavigateBack = { navController.popBackStack() },
-                                    onNavigateToEmulation = {
-                                        navController.navigate(Screen.Emulation.route)
-                                    }
-                                )
+                                try {
+                                    DetailScreen(
+                                        onNavigateBack = { navController.popBackStack() },
+                                        onNavigateToEmulation = {
+                                            navController.navigate(Screen.Emulation.route)
+                                        }
+                                    )
+                                } catch (e: Exception) {
+                                    Log.e("MainActivity", "Error in DetailScreen", e)
+                                    Text("Error loading detail screen")
+                                }
                             }
                             composable(Screen.Emulation.route) {
-                                EmulationScreen(
-                                    onNavigateBack = { navController.popBackStack() }
-                                )
+                                try {
+                                    EmulationScreen(
+                                        onNavigateBack = { navController.popBackStack() }
+                                    )
+                                } catch (e: Exception) {
+                                    Log.e("MainActivity", "Error in EmulationScreen", e)
+                                    Text("Error loading emulation screen")
+                                }
                             }
                         }
                     }
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error setting up navigation", e)
+                    Text("Error initializing app: ${e.message}")
                 }
             }
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error in setContent", e)
         }
 
         try {
