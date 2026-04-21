@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.NFCCardManager" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowBackground">@color/navy_dark</item>
+    </style>
+
+    <!-- Splash theme: full dark screen, no action bar -->
+    <style name="Theme.NFCCardManager.Splash" parent="Theme.NFCCardManager">
+        <item name="android:windowBackground">@color/navy_dark</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 </resources>

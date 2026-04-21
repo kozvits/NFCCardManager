@@ -2,14 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- NFC Permissions -->
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.ACCESS_NFC_STATE" />
-
-    <!-- For API 33+ notification permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- NFC Feature Declaration -->
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="false" />
@@ -26,16 +22,25 @@
         android:theme="@style/Theme.NFCCardManager"
         tools:targetApi="34">
 
-        <!-- Main Activity -->
+        <!-- SPLASH — launcher entry point -->
         <activity
-            android:name=".presentation.ui.main.MainActivity"
+            android:name=".presentation.ui.splash.SplashActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.NFCCardManager">
+            android:theme="@style/Theme.NFCCardManager.Splash"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- MAIN Compose Activity (NFC intents delivered here) -->
+        <activity
+            android:name=".presentation.ui.main.MainActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.NFCCardManager"
+            android:windowSoftInputMode="adjustResize">
 
             <!-- NFC Intent Filters -->
             <intent-filter>
@@ -54,7 +59,13 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
 
-        <!-- HCE Service for Card Emulation -->
+        <!-- Legacy stub -->
+        <activity
+            android:name=".presentation.ui.detail.CardDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NFCCardManager" />
+
+        <!-- HCE Service -->
         <service
             android:name=".service.CardEmulationService"
             android:exported="true"
