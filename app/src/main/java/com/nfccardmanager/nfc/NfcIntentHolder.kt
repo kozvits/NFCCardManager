@@ -15,9 +15,13 @@ class NfcIntentHolder @Inject constructor() {
     // Convenience property used by MainActivity
     var intent: Intent?
         get() = _lastIntent.value
-        set(value) { if (value != null) _lastIntent.value = value }
+        set(value) {
+            if (value != null) {
+                _lastIntent.value = value
+            }
+        }
 
-    fun setIntent(intent: Intent) {
+    fun updateIntent(intent: Intent) {
         _lastIntent.value = intent
     }
 
