@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.compose.rememberNavController
 import com.nfccardmanager.presentation.ui.theme.NFCCardManagerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,8 +29,7 @@ class MainActivity : ComponentActivity() {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Text(
                         text = "NFC Card Manager\n\nTap + to scan card",
-                        color = Color.Black,
-                        modifier = Modifier.fillMaxSize()
+                        color = Color.Black
                     )
                 }
             }
@@ -80,54 +78,5 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-    }
-}
-        }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        nfcIntentHolder.setIntent(intent)
-    }
-}
-
-@Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Main.route
-    ) {
-        composable(Screen.Main.route) {
-            MainScreen(
-                onNavigateToScan      = { navController.navigate(Screen.Scan.route) },
-                onNavigateToDetail    = { cardId -> navController.navigate(Screen.Detail.createRoute(cardId)) },
-                onNavigateToEmulation = { navController.navigate(Screen.Emulation.route) }
-            )
-        }
-
-        composable(Screen.Scan.route) {
-            ScanScreen(onNavigateBack = { navController.popBackStack() })
-        }
-
-        composable(
-            route     = Screen.Detail.route,
-            arguments = listOf(navArgument("cardId") { type = NavType.LongType })
-        ) {
-            DetailScreen(
-                onNavigateBack        = { navController.popBackStack() },
-                onNavigateToEmulation = {
-                    navController.navigate(Screen.Emulation.route) {
-                        popUpTo(Screen.Main.route)
-                    }
-                }
-            )
-        }
-
-        composable(Screen.Emulation.route) {
-            EmulationScreen(onNavigateBack = { navController.popBackStack() })
-        }
     }
 }
